@@ -1,0 +1,67 @@
+//直接寻址表：关键字的全域U较小时使用，可以实现动态集合
+//散列表：利用散列函数根据关键字k计算出槽的位置。根据对“碰撞”的处理，可以分为链接法和开放寻址法。
+//       散列函数：除法散列法，乘法散列法，全域散列（一组函数）
+//       链接法：把散列到同一个槽中的所有元素都放在一个链表中;开放寻址法：线性探查，二次探查，双重探查。
+//散列表T的装载因子：一个链中平均存储的元素数
+//完全散列：一种散列技术在进行查找时，其最坏情况内存访问次数为O(1)
+//         利用一种两级散列方案，每一级都采用全域散列
+
+//两种假设：
+//简单一致散列：任何元素散列到m槽中的每一个的可能性是相同的，且与其他元素已被散列到什么位置上是独立无关的。
+//一致散列：插入或查找每一个关键字k的探查序列<h(k,0),h(k,1),...,h(k,m-1)>为<0,1,...,m-1>的任一种排序的可能性是相同的。
+
+class ChainedHash
+{
+public:
+	ChainedHash(int m);
+	int Insert(int k);
+	int Search(int k);
+	int Delete(int k);
+	int **list;
+private:
+	void HashFunction();
+	int m;
+};
+class OpenAddressingHash
+{
+private:
+	void LinearProbing(int *fuction(int k)){		//线性探查
+		int i;
+		for i = [0,m-1]
+			if(list[function(k) + i] is empty(insert) or equals k(search))
+				insert before end or return true;
+		error insert fail or return false;
+	}
+	void QuadraticProbing(int *fuction(int k),int a,int b){	//二次探查
+		int i;
+		for i = [0,m-1]
+			if(list[function(k) + a*i +b*i*i ] is empty(insert) or equals k(search or delete))
+				insert before end or return true;
+		error insert fail or return false;
+	}
+	void DoubleHash(int int *fuction1(int k),int *fuction2(int k)){	//双重散列
+		int i;
+		for i = [0,m-1]
+			if(list[function1(k) + i*fuction2(int k)] is empty(insert) or equals k(search or delete))
+				insert before end or return true;
+		error insert fail or return false;
+	}
+};
+
+int DivisionFunction(int k)
+{
+	return k % m;		//m的值常常是与2的整数冪不大接近的质数
+}
+int MultiplicationFunction(int k)
+{
+	double a = ( sqrt(5) - 1 ) / 2;	//调用cmath函数库
+	double b = a * (double)k % 1;
+	return (int) m * b;	//对m无要求
+}
+int UniversalFunction(int k)	//全域散列函数
+{
+	Choose a sufficiently large prime number --- p
+	int a = random(0,1,...,p-1), b = random(1,2,...,p-1);
+	return ( ( a * k + b ) % p ) % m;
+}
+
