@@ -1,6 +1,0 @@
-//d叉树排序的实现
-#include<iostream>
-using namespace std;
-void MaxHeap(int *num,int pos,int total)
-void BuildMaxHeap(int *num,int total)
-void HeapSort(int *num,int total)
