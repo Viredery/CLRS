@@ -8,12 +8,6 @@ struct BiNode
 	BiNode<T> *rchild;
 };
 template<class T>
-struct SNode
-{
-	BiNode<T> *p;
-	int tag;
-};
-template<class T>
 class BiTree
 {
 public:
@@ -89,26 +83,33 @@ void BiTree<T>::InOrder(BiNode<T> *R)
 template<class T>
 void BiTree<T>::PostOrder(BiNode<T> *R)
 {
-	SNode<T> stack[100];
-	int top = -1;
-	do{
-		while(R != NULL)
+	BiNode<T>* stack[100];
+	int top=-1;
+	BiNode<T>* node=R, preNode=NULL;
+	while(node!=NULL)
+	{
+		stack[++top]=node;
+		node=node->lchild;
+	}
+	while(top!=-1)
+	{
+		node=stack[top--];
+		if(node->rchild!=NULL||node->rchild!=preNode)
 		{
-			stack[++top].p = R;
-			stack[top].tag = 1;
-			R = R->lchild;
+			cout<<node->data<<" ";
+			preNode=node;
 		}
-		while(top != -1 && stack[top].tag == 2)
+		else
 		{
-			cout<<stack[top].p->data<<" ";
-			top--;
+			stack[++top]=node;
+			node=node->rchild;
+			while(node)
+			{
+				stack[++top]=node;
+				node=node->lchild;
+			}
 		}
-		if(top != -1 && stack[top].tag == 1)
-		{
-			R=stack[top].p->rchild;
-			stack[top].tag=2;
-		}
-	}while(top != -1);
+	}
 	cout<<endl;
 }
 template<class T>
